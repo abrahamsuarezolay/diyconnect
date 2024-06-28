@@ -30,20 +30,25 @@ public class User {
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JsonBackReference
     private List<Message> messagesSent;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
     @ToString.Exclude
+    @JsonBackReference
     private List<Message> messagesReceived;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
+    @JsonBackReference
     private City city;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Band> bands;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<UserRole> userRoles;
 
 }

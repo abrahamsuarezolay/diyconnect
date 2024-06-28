@@ -25,10 +25,12 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "sender_user_id")
     @ToString.Exclude
+    @JsonManagedReference
     private User sender;
 
     @ManyToOne
     @JoinColumn(name = "receiver_user_id")
     @ToString.Exclude
+    @JsonManagedReference
     private User receiver;
 }

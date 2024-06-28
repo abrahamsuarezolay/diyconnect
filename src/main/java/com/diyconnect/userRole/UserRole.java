@@ -2,6 +2,7 @@ package com.diyconnect.userRole;
 
 import com.diyconnect.role.Role;
 import com.diyconnect.user.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +23,11 @@ public class UserRole {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonManagedReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonManagedReference
     private Role role;
 }

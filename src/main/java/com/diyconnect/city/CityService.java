@@ -26,4 +26,6 @@ public interface CityService {
     void deleteAll(Iterable<? extends City> entities);
 
     void deleteAll();
+
+    Optional<City> findByName(String name);
 }
