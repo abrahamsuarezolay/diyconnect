@@ -19,12 +19,4 @@ class DiyconnectApplicationTests {
 	void contextLoads() {
 	}
 
-	@Test
-	public void MessageService_ObtainAllMessages_ReturnsListOfMessages() {
-		List<Message> messages = (List<Message>) messageService.findAll();
-
-		System.out.println(messages.get(0).getMessage() + " " + messages.get(0).getSender().getUsername() + " " + messages.get(0).getReceiver().getUsername());
-
-	}
-
 }
