@@ -28,7 +28,6 @@ public class Band {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
