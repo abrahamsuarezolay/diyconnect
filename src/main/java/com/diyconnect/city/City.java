@@ -3,13 +3,16 @@ package com.diyconnect.city;
 import com.diyconnect.band.Band;
 import com.diyconnect.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "cities")
@@ -25,10 +28,18 @@ public class City {
     private String name;
 
     @OneToMany(mappedBy = "city")
-    @JsonManagedReference
+    @JsonBackReference
     private List<User> users;
 
     @OneToMany(mappedBy = "city")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Band> bands;
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "city_id=" + city_id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

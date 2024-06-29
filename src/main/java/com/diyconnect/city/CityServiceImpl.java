@@ -1,10 +1,9 @@
 package com.diyconnect.city;
 
-import com.diyconnect.exception.cityException.NotFoundCityException;
+import com.diyconnect.exception.cityException.CityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -78,7 +77,7 @@ public class CityServiceImpl implements CityService {
         Optional<City> city = cityRepository.findByName(name);
 
         if (city.isEmpty()){
-            throw new NotFoundCityException();
+            throw new CityNotFoundException();
         }else{
             return city;
         }

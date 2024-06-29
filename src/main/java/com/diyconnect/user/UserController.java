@@ -1,6 +1,6 @@
-package com.diyconnect.city;
+package com.diyconnect.user;
 
-import com.diyconnect.exception.cityException.CityNotFoundException;
+import com.diyconnect.exception.userException.NoUsersForCityException;
 import com.diyconnect.utils.mappers.DTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,25 +10,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
-@RequestMapping("/cities")
-public class CityController {
-
+@RequestMapping("/users")
+public class UserController {
     @Autowired
-    private CityService cityService;
+    private UserService userService;
 
     private DTOMapper dtoMapper = new DTOMapper();
 
-    @GetMapping("/byname")
-    public ResponseEntity<?> getCityByName(@RequestParam String cityName){
+    @GetMapping("/findByCity")
+    public ResponseEntity<?> findUsersByCityName(@RequestParam  String cityName){
         try{
-            City city = cityService.findByName(cityName).get();
-            CityDTO cityDTO = dtoMapper.cityToDTO(city);
+            List<User> users = userService.findByCityName(cityName).get();
+            List<UserDTO> usersDTO = dtoMapper.ListUsersToDTO(users);
 
-            return new ResponseEntity<CityDTO>(cityDTO, HttpStatus.OK);
+            return new ResponseEntity<List<UserDTO>>(usersDTO, HttpStatus.OK);
 
-        }catch(CityNotFoundException e){
+        }catch(NoUsersForCityException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }

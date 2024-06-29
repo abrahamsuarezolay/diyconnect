@@ -1,5 +1,6 @@
 package com.diyconnect.user;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -8,6 +9,8 @@ public interface UserService {
     <S extends User> Iterable<S> saveAll(Iterable<S> entities);
 
     Optional<User> findById(Long aLong);
+
+    Optional<List<User>> findByCityName(String cityName);
 
     boolean existsById(Long aLong);
 

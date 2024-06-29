@@ -4,9 +4,7 @@ import com.diyconnect.band.Band;
 import com.diyconnect.city.City;
 import com.diyconnect.message.Message;
 import com.diyconnect.userRole.UserRole;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -29,12 +28,10 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
-    @ToString.Exclude
     @JsonBackReference
     private List<Message> messagesSent;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
-    @ToString.Exclude
     @JsonBackReference
     private List<Message> messagesReceived;
 
@@ -48,7 +45,15 @@ public class User {
     private List<Band> bands;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
+    @JsonBackReference
     private List<UserRole> userRoles;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "user_id=" + user_id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
