@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface BandRepository extends CrudRepository<Band, Long> {
 
     Optional<List<Band>> findByCityName(String cityName);
+    Optional<List<Band>> findByUserEmail(String userEmail);
 }

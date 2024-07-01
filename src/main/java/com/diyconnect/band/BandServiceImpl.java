@@ -1,6 +1,7 @@
 package com.diyconnect.band;
 
 import com.diyconnect.exception.bandException.NoBandForCityException;
+import com.diyconnect.exception.bandException.NoBandForUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,6 +80,16 @@ public class BandServiceImpl implements BandService {
             throw new NoBandForCityException();
         }else{
             return band;
+        }
+    }
+
+    public Optional<List<Band>> findByUserEmail(String userEmail) {
+        Optional<List<Band>> bands = bandRepository.findByUserEmail(userEmail);
+
+        if(bands.isEmpty()){
+            throw new NoBandForUserException();
+        }else{
+            return bands;
         }
     }
 }

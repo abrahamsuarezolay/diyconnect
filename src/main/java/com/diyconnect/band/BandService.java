@@ -29,4 +29,6 @@ public interface BandService {
     void deleteAll();
 
     Optional<List<Band>> findByCityName(String cityName);
+
+    Optional<List<Band>> findByUserEmail(String userName);
 }

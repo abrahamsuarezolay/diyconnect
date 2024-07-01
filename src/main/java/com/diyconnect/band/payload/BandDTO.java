@@ -1,4 +1,4 @@
-package com.diyconnect.band;
+package com.diyconnect.band.payload;
 
 import com.diyconnect.city.City;
 import com.diyconnect.user.User;

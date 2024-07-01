@@ -1,7 +1,7 @@
 package com.diyconnect.utils.mappers;
 
 import com.diyconnect.band.Band;
-import com.diyconnect.band.BandDTO;
+import com.diyconnect.band.payload.BandDTO;
 import com.diyconnect.city.City;
 import com.diyconnect.city.CityDTO;
 import com.diyconnect.user.User;
