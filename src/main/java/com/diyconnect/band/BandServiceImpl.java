@@ -1,8 +1,10 @@
 package com.diyconnect.band;
 
+import com.diyconnect.exception.bandException.NoBandForCityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,5 +70,15 @@ public class BandServiceImpl implements BandService {
     @Override
     public void deleteAll() {
         bandRepository.deleteAll();
+    }
+
+    public Optional<List<Band>> findByCityName(String cityName) {
+        Optional<List<Band>> band = bandRepository.findByCityName(cityName);
+
+        if(band.isEmpty()) {
+            throw new NoBandForCityException();
+        }else{
+            return band;
+        }
     }
 }

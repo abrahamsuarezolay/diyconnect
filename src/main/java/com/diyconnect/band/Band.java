@@ -31,7 +31,7 @@ public class Band {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonManagedReference
+    @JsonBackReference
     private User user;
 
     @ManyToOne

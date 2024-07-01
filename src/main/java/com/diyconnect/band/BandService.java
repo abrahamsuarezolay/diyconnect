@@ -1,5 +1,6 @@
 package com.diyconnect.band;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BandService {
@@ -26,4 +27,6 @@ public interface BandService {
     void deleteAll(Iterable<? extends Band> entities);
 
     void deleteAll();
+
+    Optional<List<Band>> findByCityName(String cityName);
 }

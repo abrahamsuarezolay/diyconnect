@@ -81,7 +81,6 @@ public class UserServiceImpl implements UserService {
     public Optional<List<User>> findByCityName(String cityName) {
 
         Optional<List<User>> users = userRepository.findByCityName(cityName);
-        System.out.println(users);
 
         if(users.isEmpty()){
             throw new NoUsersForCityException();

@@ -1,5 +1,7 @@
 package com.diyconnect.utils.mappers;
 
+import com.diyconnect.band.Band;
+import com.diyconnect.band.BandDTO;
 import com.diyconnect.city.City;
 import com.diyconnect.city.CityDTO;
 import com.diyconnect.user.User;
@@ -45,5 +47,38 @@ public class DTOMapper {
         }
 
         return usersDTO;
+    }
+
+
+    public BandDTO bandToDTO(Band band){
+        BandDTO bandDTO = new BandDTO(
+                band.getBand_id(),
+                band.getName(),
+                band.getGender(),
+                band.getDescription(),
+                band.getUser(),
+                band.getCity(),
+                band.getLinks()
+        );
+        return bandDTO;
+    }
+
+    public List<BandDTO> listBandToDTOs(List<Band> bands){
+
+        List<BandDTO> bandDTOs = new ArrayList<BandDTO>();
+
+        for(Band band : bands){
+            bandDTOs.add(new BandDTO(
+                    band.getBand_id(),
+                    band.getName(),
+                    band.getGender(),
+                    band.getDescription(),
+                    band.getUser(),
+                    band.getCity(),
+                    band.getLinks()
+            ));
+        }
+
+        return bandDTOs;
     }
 }
