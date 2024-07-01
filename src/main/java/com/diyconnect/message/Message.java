@@ -41,4 +41,10 @@ public class Message {
                 ", message='" + message + '\'' +
                 '}';
     }
+
+    public Message(String message, User sender, User receiver) {
+        this.message = message;
+        this.sender = sender;
+        this.receiver = receiver;
+    }
 }
