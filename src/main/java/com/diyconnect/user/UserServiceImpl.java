@@ -4,6 +4,7 @@ import com.diyconnect.city.City;
 import com.diyconnect.city.CityRepository;
 import com.diyconnect.exception.cityException.CityNotFoundException;
 import com.diyconnect.exception.userException.NoUsersForCityException;
+import com.diyconnect.exception.userException.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteAll();
     }
 
+    @Override
     public Optional<List<User>> findByCityName(String cityName) {
 
         Optional<List<User>> users = userRepository.findByCityName(cityName);
@@ -86,6 +88,18 @@ public class UserServiceImpl implements UserService {
             throw new NoUsersForCityException();
         }else{
             return users;
+        }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (user.isEmpty()){
+            throw new UserNotFoundException();
+        }else{
+            return userRepository.findByEmail(email);
         }
     }
 }

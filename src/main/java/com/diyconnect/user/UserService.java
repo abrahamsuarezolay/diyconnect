@@ -12,6 +12,8 @@ public interface UserService {
 
     Optional<List<User>> findByCityName(String cityName);
 
+    Optional<User> findByEmail(String email);
+
     boolean existsById(Long aLong);
 
     Iterable<User> findAll();

@@ -1,5 +1,7 @@
 package com.diyconnect.message;
 
+import com.diyconnect.exception.messageException.MessageEmptyException;
+import com.diyconnect.utils.checkers.MessageContentChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +12,14 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageRepository messageRepository;
 
+    private MessageContentChecker messageContentChecker = new MessageContentChecker();
+
     @Override
     public <S extends Message> S save(S entity) {
 
-
-
+        if(!messageContentChecker.isValidMessage(entity.getMessage())){
+            throw new MessageEmptyException();
+        }
 
         return messageRepository.save(entity);
     }
