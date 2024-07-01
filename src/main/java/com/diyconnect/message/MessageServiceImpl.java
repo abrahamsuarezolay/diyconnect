@@ -1,10 +1,14 @@
 package com.diyconnect.message;
 
 import com.diyconnect.exception.messageException.MessageEmptyException;
+import com.diyconnect.user.User;
 import com.diyconnect.utils.checkers.MessageContentChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +24,8 @@ public class MessageServiceImpl implements MessageService {
         if(!messageContentChecker.isValidMessage(entity.getMessage())){
             throw new MessageEmptyException();
         }
+
+        entity.setTimestamp(LocalDateTime.now());
 
         return messageRepository.save(entity);
     }
@@ -77,5 +83,9 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void deleteAll() {
         messageRepository.deleteAll();
+    }
+
+    public Optional<List<Message>> getConversation(User sender, User receiver) {
+        return messageRepository.getConversation(sender, receiver);
     }
 }

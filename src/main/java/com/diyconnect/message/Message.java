@@ -11,6 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +28,7 @@ public class Message {
     private long message_id;
 
     private String message;
+    private LocalDateTime timestamp;
 
     @ManyToOne
     @JoinColumn(name = "sender_user_id")

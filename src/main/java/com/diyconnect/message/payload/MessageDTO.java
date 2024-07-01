@@ -1,4 +1,4 @@
-package com.diyconnect.message;
+package com.diyconnect.message.payload;
 import com.diyconnect.user.User;
 import com.diyconnect.user.UserService;
 import lombok.AllArgsConstructor;

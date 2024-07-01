@@ -1,5 +1,8 @@
 package com.diyconnect.message;
 
+import com.diyconnect.user.User;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface MessageService {
@@ -26,4 +29,6 @@ public interface MessageService {
     void deleteAll(Iterable<? extends Message> entities);
 
     void deleteAll();
+
+    Optional<List<Message>> getConversation(User sender, User receiver);
 }
