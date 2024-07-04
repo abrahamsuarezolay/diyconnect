@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,8 +25,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long user_id;
+
+    @Column(unique = true)
     private String username;
+
+    @Column(unique = true)
     private String email;
+
+    private String password;
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
     @JsonBackReference
@@ -44,7 +51,7 @@ public class User {
     @JsonBackReference
     private List<Band> bands;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonBackReference
     private List<UserRole> userRoles;
 
@@ -55,5 +62,18 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String username, String email, String password, List<UserRole> userRoles) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userRoles = userRoles;
     }
 }

@@ -5,7 +5,7 @@ import com.diyconnect.band.payload.BandDTO;
 import com.diyconnect.city.City;
 import com.diyconnect.city.CityDTO;
 import com.diyconnect.user.User;
-import com.diyconnect.user.UserDTO;
+import com.diyconnect.user.payload.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;

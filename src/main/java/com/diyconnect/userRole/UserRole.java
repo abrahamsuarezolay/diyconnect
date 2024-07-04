@@ -40,4 +40,9 @@ public class UserRole {
                 "userRole_id=" + userRole_id +
                 '}';
     }
+
+    public UserRole(User user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
 }
