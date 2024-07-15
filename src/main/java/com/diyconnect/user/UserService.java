@@ -31,4 +31,6 @@ public interface UserService {
     void deleteAll(Iterable<? extends User> entities);
 
     void deleteAll();
+
+    Optional<User> modifyCity(String cityName, String userEmail);
 }

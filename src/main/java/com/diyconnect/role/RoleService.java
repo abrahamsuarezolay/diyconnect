@@ -26,4 +26,6 @@ public interface RoleService {
     void deleteAll(Iterable<? extends Role> entities);
 
     void deleteAll();
+
+    Optional<Role> findByName(String roleName);
 }

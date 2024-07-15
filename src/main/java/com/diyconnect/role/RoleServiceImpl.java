@@ -69,4 +69,8 @@ public class RoleServiceImpl implements RoleService {
     public void deleteAll() {
         roleRepository.deleteAll();
     }
+
+    public Optional<Role> findByName(String roleName) {
+        return roleRepository.findByName(roleName);
+    }
 }

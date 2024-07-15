@@ -26,7 +26,7 @@ public class Role {
     private long role_id;
 
     @Column(unique = true)
-    private String role_name;
+    private String name;
 
     @OneToMany(mappedBy = "role")
     private List<UserRole> users;
@@ -35,7 +35,7 @@ public class Role {
     public String toString() {
         return "Role{" +
                 "role_id=" + role_id +
-                ", role_name='" + role_name + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
