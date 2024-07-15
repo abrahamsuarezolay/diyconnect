@@ -24,8 +24,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long user_id;
+
+    @Column(unique = true)
     private String username;
     private String email;
+    private boolean enabled = true;
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
     @JsonBackReference
