@@ -24,7 +24,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long role_id;
-    private String role_name;
+    private String name;
 
     @OneToMany(mappedBy = "role")
     private List<UserRole> users;
@@ -33,7 +33,7 @@ public class Role {
     public String toString() {
         return "Role{" +
                 "role_id=" + role_id +
-                ", role_name='" + role_name + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

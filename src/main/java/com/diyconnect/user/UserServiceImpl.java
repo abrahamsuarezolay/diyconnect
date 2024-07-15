@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             //For now, we just save new users on the user role
-            Role role = roleRepository.findById(1L).get();
+            Role role = roleRepository.findByName("ROLE_USER").get();
 
             //We declare the userRole instance
             UserRole userRole = new UserRole(entity, role);
