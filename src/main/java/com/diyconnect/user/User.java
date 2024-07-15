@@ -6,10 +6,7 @@ import com.diyconnect.message.Message;
 import com.diyconnect.userRole.UserRole;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +53,11 @@ public class User {
     @JsonBackReference
     private List<UserRole> userRoles;
 
+    @Setter
+    @Getter
+    @Transient
+    private boolean admin;
+
     @Override
     public String toString() {
         return "User{" +
@@ -71,10 +73,18 @@ public class User {
         this.password = password;
     }
 
+    public User(String username, String email, String password, boolean admin) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.admin = admin;
+    }
+
     public User(String username, String email, String password, List<UserRole> userRoles) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.userRoles = userRoles;
     }
+
 }

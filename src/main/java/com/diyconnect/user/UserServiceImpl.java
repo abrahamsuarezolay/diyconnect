@@ -13,6 +13,7 @@ import com.diyconnect.userRole.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,26 +36,36 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public <S extends User> S save(S entity) {
 
         try {
-            //For now, we just save new users on the user role
-            Role role = roleRepository.findByName("ROLE_USER").get();
 
-            //We declare the userRole instance
-            UserRole userRole = new UserRole(entity, role);
+            List<UserRole> roles = new ArrayList<UserRole>();
 
-            //We add to the user entity the userRole instance and we encrypt the password
-            entity.setUserRoles(new ArrayList<UserRole>());
-            entity.getUserRoles().add(userRole);
-            entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
+            //We add the role user to every new user
+            Optional<Role> roleUser = roleRepository.findByName("ROLE_USER");
+            roleUser.ifPresent(role -> roles.add(new UserRole(entity, roleUser.get())));
 
-            //We save both tables
+            //We add the role admin in case the flag is true
+            if(entity.isAdmin()){
+                Optional<Role> roleAdmin = roleRepository.findByName("ROLE_ADMIN");
+                roleAdmin.ifPresent(role -> roles.add(new UserRole(entity, roleAdmin.get())));
+            }
+
+            //We encrypt the user password
+            entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+
+            //We save user Table
+            entity.setUserRoles(roles);
             userRepository.save(entity);
-            userRoleRepository.save(userRole);
+
+            //We iterate over the list of userroles and save the userRole table
+            roles.forEach(userRole -> {
+                userRoleRepository.save(userRole);
+            });
 
             return entity;
         } catch (DataIntegrityViolationException e) {

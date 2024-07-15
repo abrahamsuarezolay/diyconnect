@@ -18,10 +18,10 @@ public class UserTest {
 
     @Test
     void UserService_AddNewUser_ReturnsUser() {
-        User user = new User("deadbolt", "deadbolt@gmail.com", "1234");
+        User user = new User("deadbolt4", "deadbolt4@gmail.com", "1234", true);
 
         userService.save(user);
 
-        Assertions.assertThat(userService.findByEmail("deadbolt@gmail.com").isPresent());
+        Assertions.assertThat(userService.findByEmail("deadbolt4@gmail.com").isPresent());
     }
 }

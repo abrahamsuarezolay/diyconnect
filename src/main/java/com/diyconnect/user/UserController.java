@@ -30,7 +30,8 @@ public class UserController {
             User savedUser = new User(
                     user.getUsername(),
                     user.getEmail(),
-                    user.getPassword()
+                    user.getPassword(),
+                    user.isAdmin()
             );
 
             userService.save(savedUser);
