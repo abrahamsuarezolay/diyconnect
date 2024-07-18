@@ -28,8 +28,14 @@ public class User {
 
     @Column(unique = true)
     private String email;
-    private boolean enabled = true;
+    private boolean enabled;
 
+    @PrePersist
+    public void prePersistEnabled() {
+        enabled = true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)

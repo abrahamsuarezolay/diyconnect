@@ -28,16 +28,19 @@ public class UserRole {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonBackReference
     private Role role;
 
     @Override
     public String toString() {
         return "UserRole{" +
                 "userRole_id=" + userRole_id +
+                "role=" + role.getName() +
                 '}';
     }
 

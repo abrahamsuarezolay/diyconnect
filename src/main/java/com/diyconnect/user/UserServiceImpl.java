@@ -89,8 +89,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Iterable<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll() {
+        return (List<User>) userRepository.findAll();
     }
 
     @Override
@@ -163,4 +163,7 @@ public class UserServiceImpl implements UserService {
         return Optional.of(userToModify);
     }
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
