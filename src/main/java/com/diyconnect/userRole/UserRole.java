@@ -28,12 +28,12 @@ public class UserRole {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference("userUserRolesReference")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    @JsonBackReference
+    @JsonBackReference("roleUserRolesReference")
     private Role role;
 
     @Override

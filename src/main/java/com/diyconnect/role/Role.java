@@ -29,6 +29,7 @@ public class Role {
     private String name;
 
     @OneToMany(mappedBy = "role")
+    @JsonManagedReference("roleUserRolesReference")
     private List<UserRole> users;
 
     @Override

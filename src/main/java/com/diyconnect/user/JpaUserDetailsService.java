@@ -22,7 +22,6 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
-
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

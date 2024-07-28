@@ -31,12 +31,12 @@ public class Band {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference("userBandsReference")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonBackReference
+    @JsonBackReference("cityBandsReference")
     private City city;
 
     private List<String> links;

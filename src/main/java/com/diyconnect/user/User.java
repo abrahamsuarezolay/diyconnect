@@ -39,24 +39,24 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference("userMessagesSentReference")
     private List<Message> messagesSent;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference("userMessagesReceivedReference")
     private List<Message> messagesReceived;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonBackReference
+    @JsonBackReference("cityUserReference")
     private City city;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+    @JsonManagedReference("userBandsReference")
     private List<Band> bands;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference("userUserRolesReference")
     private List<UserRole> userRoles;
 
     @Setter
