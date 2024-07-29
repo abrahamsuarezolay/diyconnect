@@ -12,5 +12,4 @@ public class SaveNewUserRequest {
     private String email;
     private String password;
     private boolean admin;
-
 }
