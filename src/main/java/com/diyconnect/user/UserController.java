@@ -30,7 +30,8 @@ public class UserController {
             User savedUser = new User(
                     user.getUsername(),
                     user.getEmail(),
-                    user.getPassword()
+                    user.getPassword(),
+                    user.isAdmin()
             );
 
             userService.save(savedUser);
@@ -68,5 +69,13 @@ public class UserController {
         }catch(CityException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/findall")
+    public ResponseEntity<?> findAllUsers(){
+        List <User> users = userService.findAll();
+        List<UserDTO> usersDto = dtoMapper.ListUsersToDTO(users);
+
+        return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 }

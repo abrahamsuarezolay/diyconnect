@@ -6,10 +6,7 @@ import com.diyconnect.message.Message;
 import com.diyconnect.userRole.UserRole;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,30 +28,41 @@ public class User {
 
     @Column(unique = true)
     private String email;
-    private boolean enabled = true;
+    private boolean enabled;
 
+    @PrePersist
+    public void prePersistEnabled() {
+        enabled = true;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference("userMessagesSentReference")
     private List<Message> messagesSent;
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference("userMessagesReceivedReference")
     private List<Message> messagesReceived;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonBackReference
+    @JsonBackReference("cityUserReference")
     private City city;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+    @JsonManagedReference("userBandsReference")
     private List<Band> bands;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonBackReference
+    @JsonManagedReference("userUserRolesReference")
     private List<UserRole> userRoles;
+
+    @Setter
+    @Getter
+    @Transient
+    private boolean admin;
 
     @Override
     public String toString() {
@@ -71,10 +79,18 @@ public class User {
         this.password = password;
     }
 
+    public User(String username, String email, String password, boolean admin) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.admin = admin;
+    }
+
     public User(String username, String email, String password, List<UserRole> userRoles) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.userRoles = userRoles;
     }
+
 }

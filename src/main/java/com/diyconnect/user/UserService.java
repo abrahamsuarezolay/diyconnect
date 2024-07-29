@@ -16,7 +16,7 @@ public interface UserService {
 
     boolean existsById(Long aLong);
 
-    Iterable<User> findAll();
+    List<User> findAll();
 
     Iterable<User> findAllById(Iterable<Long> longs);
 
@@ -33,4 +33,6 @@ public interface UserService {
     void deleteAll();
 
     Optional<User> modifyCity(String cityName, String userEmail);
+
+    Optional<User> findByUsername(String username);
 }

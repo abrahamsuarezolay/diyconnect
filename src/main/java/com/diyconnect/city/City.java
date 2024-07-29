@@ -28,11 +28,11 @@ public class City {
     private String name;
 
     @OneToMany(mappedBy = "city")
-    @JsonBackReference
+    @JsonManagedReference("cityUserReference")
     private List<User> users;
 
     @OneToMany(mappedBy = "city")
-    @JsonBackReference
+    @JsonManagedReference("cityBandsReference")
     private List<Band> bands;
 
     @Override

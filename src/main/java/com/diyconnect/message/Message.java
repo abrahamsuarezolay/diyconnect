@@ -32,10 +32,12 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "sender_user_id")
+    @JsonBackReference("userMessagesSentReference")
     private User sender;
 
     @ManyToOne
     @JoinColumn(name = "receiver_user_id")
+    @JsonBackReference("userMessagesReceivedReference")
     private User receiver;
 
     @Override
