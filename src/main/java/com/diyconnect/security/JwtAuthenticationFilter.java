@@ -90,7 +90,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60); // Expiración de 24 horas
+        cookie.setMaxAge(1 * 60 * 60); // Expiración de 24 horas
 
         response.addCookie(cookie);
 

@@ -40,8 +40,8 @@ public class SecurityConfig {
                         .requestMatchers("/users/savenewuser").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/users/confirmregistration").permitAll()
-
-                        .anyRequest().permitAll())
+                        .requestMatchers("/auth/verifytoken").permitAll()
+                        .anyRequest().authenticated())
                 .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
                 .addFilter(new JwtValidationFilter(authenticationConfiguration.getAuthenticationManager()))
                 .csrf((csrf) -> csrf.disable())

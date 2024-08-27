@@ -76,6 +76,17 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     }*/
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+
+        // Excluir las rutas que no necesitan autenticación
+        return path.equals("/users/confirmregistration") ||
+                path.equals("/users/savenewuser") ||
+                path.equals("/login") ||
+                path.equals("/auth/verifytoken");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
