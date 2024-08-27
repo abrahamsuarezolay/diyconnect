@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .issuedAt(new Date())
                 .signWith(SECRET_KEY)
                 .compact();
+
+        //Generamos una cookie para el token. Esto es mejor a niveles de seguridad.
+        Cookie cookie = new Cookie("authToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60); // Expiración de 24 horas
+
+        response.addCookie(cookie);
 
         //Generamos el header de la respuesta con el token.
         response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
