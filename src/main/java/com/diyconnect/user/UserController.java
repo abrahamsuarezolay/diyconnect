@@ -3,6 +3,7 @@ package com.diyconnect.user;
 import com.diyconnect.exception.cityException.CityException;
 import com.diyconnect.exception.userException.NoUsersForCityException;
 import com.diyconnect.exception.userException.UserException;
+import com.diyconnect.exception.userException.UserNotFoundException;
 import com.diyconnect.message.Message;
 import com.diyconnect.user.payload.ModifyCityRequest;
 import com.diyconnect.user.payload.SaveNewUserRequest;
@@ -42,6 +43,20 @@ public class UserController {
         }
         catch(Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findbyusername")
+    public ResponseEntity<?> findByUsername(@RequestParam String username){
+        try{
+            User user = userService.findByUsername(username).get();
+
+            UserDTO userDTO = dtoMapper.userToDTO(user);
+
+            return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+
+        }catch(UserNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
