@@ -112,6 +112,9 @@ public class UserServiceImpl implements UserService {
         User user = verificationToken.getUser();
         user.setEnabled(true);
         userRepository.save(user);
+
+        //Token delete after user activation
+        tokenRepository.delete(verificationToken);
     }
 
     @Override
