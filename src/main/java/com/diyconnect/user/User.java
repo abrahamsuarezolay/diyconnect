@@ -4,6 +4,7 @@ import com.diyconnect.band.Band;
 import com.diyconnect.city.City;
 import com.diyconnect.message.Message;
 import com.diyconnect.userRole.UserRole;
+import com.diyconnect.verificationTokens.VerificationToken;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
