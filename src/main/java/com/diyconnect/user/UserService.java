@@ -32,6 +32,8 @@ public interface UserService {
 
     void deleteAll();
 
+    void activateUser(String token);
+
     Optional<User> modifyCity(String cityName, String userEmail);
 
     Optional<User> findByUsername(String username);

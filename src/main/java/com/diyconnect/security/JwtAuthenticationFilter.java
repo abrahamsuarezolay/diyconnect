@@ -106,7 +106,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //Manejo de respuesta en caso que attemptAuthentication no consiga autenticar al usuario con esas credenciales.
 
         Map<String, String> body = new HashMap<>();
-        body.put("message", "Incorrect credentials");
+        body.put("message", "Incorrect username or password.");
         body.put("error", failed.getMessage());
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));

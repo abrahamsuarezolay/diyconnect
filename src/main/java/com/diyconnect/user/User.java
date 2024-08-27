@@ -32,7 +32,7 @@ public class User {
 
     @PrePersist
     public void prePersistEnabled() {
-        enabled = true;
+        enabled = false;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

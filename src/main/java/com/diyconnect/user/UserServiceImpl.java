@@ -10,16 +10,18 @@ import com.diyconnect.role.Role;
 import com.diyconnect.role.RoleRepository;
 import com.diyconnect.userRole.UserRole;
 import com.diyconnect.userRole.UserRoleRepository;
+import com.diyconnect.verificationTokens.VerificationToken;
+import com.diyconnect.verificationTokens.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,6 +39,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private VerificationTokenRepository tokenRepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Override
     public <S extends User> S save(S entity) {
@@ -67,10 +75,43 @@ public class UserServiceImpl implements UserService {
                 userRoleRepository.save(userRole);
             });
 
+            // We save the verificationToken instance
+            String token = UUID.randomUUID().toString();
+            VerificationToken verificationToken = new VerificationToken(token, entity);
+            tokenRepository.save(verificationToken);
+
+            // We send the verification email
+            sendVerificationEmail(entity.getEmail(), token);
+
             return entity;
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistsException();
         }
+    }
+
+    private void sendVerificationEmail(String email, String token) {
+        String subject = "Complete Registration";
+        String confirmationUrl = "http://localhost:8080/users/confirmregistration?token=" + token;
+        String message = "Please click on the below link to activate your account:";
+
+        SimpleMailMessage emailMessage = new SimpleMailMessage();
+        emailMessage.setTo(email);
+        emailMessage.setSubject(subject);
+        emailMessage.setText(message + "\r\n" + confirmationUrl);
+        mailSender.send(emailMessage);
+    }
+
+    public void activateUser(String token) {
+        VerificationToken verificationToken = tokenRepository.findByToken(token);
+
+        if (verificationToken == null || verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Token is invalid or has expired");
+        }
+
+        //Update of user to enabled
+        User user = verificationToken.getUser();
+        user.setEnabled(true);
+        userRepository.save(user);
     }
 
     @Override

@@ -37,9 +37,11 @@ public class SecurityConfig {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/users/saveNewUser").permitAll()
+                        .requestMatchers("/users/savenewuser").permitAll()
                         .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/users/confirmregistration").permitAll()
+
+                        .anyRequest().permitAll())
                 .addFilter(new JwtAuthenticationFilter(authenticationConfiguration.getAuthenticationManager()))
                 .addFilter(new JwtValidationFilter(authenticationConfiguration.getAuthenticationManager()))
                 .csrf((csrf) -> csrf.disable())

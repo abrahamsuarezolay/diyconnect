@@ -24,7 +24,7 @@ public class UserController {
 
     private DTOMapper dtoMapper = new DTOMapper();
 
-    @PostMapping("/saveNewUser")
+    @PostMapping("/savenewuser")
     public ResponseEntity<?> saveNewUser(@RequestBody SaveNewUserRequest user){
         try{
             User savedUser = new User(
@@ -77,5 +77,15 @@ public class UserController {
         List<UserDTO> usersDto = dtoMapper.ListUsersToDTO(users);
 
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/confirmregistration")
+    public String confirmRegistration(@RequestParam("token") String token) {
+        try {
+            userService.activateUser(token);
+            return "Account activated successfully!";
+        } catch (Exception e) {
+            return "Activation failed: " + e.getMessage();
+        }
     }
 }
