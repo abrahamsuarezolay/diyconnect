@@ -83,6 +83,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         return path.equals("/users/confirmregistration") ||
                 path.equals("/users/savenewuser") ||
                 path.equals("/login") ||
+                path.equals("/logout") ||
                 path.equals("/auth/verifytoken");
     }
 

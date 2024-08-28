@@ -80,7 +80,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = Jwts.builder().
                 subject(user.getUsername())
                 .claims(claims)
-                .expiration(new Date(System.currentTimeMillis() + 3600000))
+                .expiration(new Date(System.currentTimeMillis() + 3600000)) //Expiracion 1 hora.
                 .issuedAt(new Date())
                 .signWith(SECRET_KEY)
                 .compact();
@@ -90,7 +90,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
-        cookie.setMaxAge(1 * 60 * 60); // Expiración de 24 horas
+        cookie.setMaxAge(1 * 60 * 60); // Expiración de 1 hora.
 
         response.addCookie(cookie);
 
