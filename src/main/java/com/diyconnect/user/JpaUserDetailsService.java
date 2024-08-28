@@ -26,7 +26,13 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Optional<User> userOptional = userService.findByUsername(username);
+        Optional<User> userOptional = Optional.empty();
+
+        if(username.contains("@")) {
+            userOptional = userService.findByEmail(username);
+        }else{
+            userOptional = userService.findByUsername(username);
+        }
 
         if(userOptional.isEmpty()){
             throw new UserNotFoundException();
