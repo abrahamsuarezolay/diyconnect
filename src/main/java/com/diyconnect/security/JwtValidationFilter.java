@@ -82,6 +82,9 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         // Excluir las rutas que no necesitan autenticación
         return path.equals("/users/confirmregistration") ||
                 path.equals("/users/savenewuser") ||
+                path.equals("/users/resetpasswordrequest") ||
+                path.equals("/users/resetpassword") ||
+                path.equals("/users/resetpasswordaction") ||
                 path.equals("/login") ||
                 path.equals("/logout") ||
                 path.equals("/auth/verifytoken");

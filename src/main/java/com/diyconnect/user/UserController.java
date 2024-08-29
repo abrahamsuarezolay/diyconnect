@@ -4,7 +4,10 @@ import com.diyconnect.exception.cityException.CityException;
 import com.diyconnect.exception.userException.NoUsersForCityException;
 import com.diyconnect.exception.userException.UserException;
 import com.diyconnect.exception.userException.UserNotFoundException;
-import com.diyconnect.message.Message;
+import com.diyconnect.passwordResetTokens.PasswordResetToken;
+import com.diyconnect.passwordResetTokens.PasswordResetTokenRepository;
+import com.diyconnect.passwordResetTokens.payload.PasswordResetRequest;
+import com.diyconnect.passwordResetTokens.payload.PasswordResetTokenDTO;
 import com.diyconnect.user.payload.ModifyCityRequest;
 import com.diyconnect.user.payload.SaveNewUserRequest;
 import com.diyconnect.user.payload.UserDTO;
@@ -14,14 +17,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     private DTOMapper dtoMapper = new DTOMapper();
 
@@ -101,6 +109,68 @@ public class UserController {
             return "Account activated successfully!";
         } catch (Exception e) {
             return "Activation failed: " + e.getMessage();
+        }
+    }
+
+    @PostMapping("/resetpasswordrequest")
+    public ResponseEntity<?> resetPasswordRequest(@RequestParam("email") String userEmail) {
+        try{
+            Optional<User> user = userService.findByEmail(userEmail);
+            String token = UUID.randomUUID().toString();
+
+            //This service creates the password token and sends the email to the user.
+            userService.createPasswordResetTokenForUser(user.get(), token);
+
+            return new ResponseEntity<>("Reset password token generated", HttpStatus.OK);
+        }catch(UserNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/resetpassword")
+    public ResponseEntity<?> verifyResetPasswordToken(@RequestParam("token") String token) {
+        //Intermediate endpoint to verify the token exists and has not expired. If the token exists, the front end reads
+        //the status 200 and redirects to the reset password form.
+        try{
+            Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(token);
+
+            LocalDateTime date = passwordResetToken.get().getExpiryDate();
+
+            if(date.isBefore(LocalDateTime.now().plusHours(25))){
+                return new ResponseEntity<PasswordResetTokenDTO>(new PasswordResetTokenDTO(passwordResetToken.get().getToken()), HttpStatus.OK);
+            }else{
+                passwordResetTokenRepository.delete(passwordResetToken.get());
+                return new ResponseEntity<>("Token expired", HttpStatus.NOT_FOUND);
+            }
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/resetpasswordaction")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest request){
+
+        //Endpoint accessed by the reset password form.
+
+        try{
+            Optional<PasswordResetToken> passwordResetToken = passwordResetTokenRepository.findByToken(request.getToken());
+            User user = passwordResetToken.get().getUser();
+
+            Optional<User> userMod = userService.resetPassword(
+                    request.getEmail(),
+                    request.getPassword(),
+                    request.getConfirmPassword(),
+                    passwordResetToken.get());
+
+            if(!userMod.isEmpty()){
+                return new ResponseEntity<>("Password updated successfully.", HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("Password not updated due to an error.", HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

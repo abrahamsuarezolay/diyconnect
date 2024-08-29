@@ -2,10 +2,11 @@ package com.diyconnect.user;
 
 import com.diyconnect.city.City;
 import com.diyconnect.city.CityRepository;
-import com.diyconnect.exception.cityException.CityNotFoundException;
 import com.diyconnect.exception.userException.NoUsersForCityException;
 import com.diyconnect.exception.userException.UserAlreadyExistsException;
 import com.diyconnect.exception.userException.UserNotFoundException;
+import com.diyconnect.passwordResetTokens.PasswordResetToken;
+import com.diyconnect.passwordResetTokens.PasswordResetTokenRepository;
 import com.diyconnect.role.Role;
 import com.diyconnect.role.RoleRepository;
 import com.diyconnect.userRole.UserRole;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private VerificationTokenRepository tokenRepository;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordTokenRepository;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -101,6 +104,19 @@ public class UserServiceImpl implements UserService {
         mailSender.send(emailMessage);
     }
 
+    private void sendResetPasswordEmail(String email, String token){
+        String subject = "Reset your password";
+        //Modify to actual url when app is going.
+        String confirmationUrl = "http://localhost:5173/resetpassword/" + token;
+        String message = "Please click on the below link to access the form to reset your password.";
+
+        SimpleMailMessage emailMessage = new SimpleMailMessage();
+        emailMessage.setTo(email);
+        emailMessage.setSubject(subject);
+        emailMessage.setText(message + "\r\n" + confirmationUrl);
+        mailSender.send(emailMessage);
+    }
+
     public void activateUser(String token) {
         VerificationToken verificationToken = tokenRepository.findByToken(token);
 
@@ -115,6 +131,15 @@ public class UserServiceImpl implements UserService {
 
         //Token delete after user activation
         tokenRepository.delete(verificationToken);
+    }
+
+
+
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken tokenObj = new PasswordResetToken(token, user, LocalDateTime.now().plusHours(24));
+        passwordTokenRepository.save(tokenObj);
+
+        sendResetPasswordEmail(user.getEmail(), tokenObj.getToken());
     }
 
     @Override
@@ -205,6 +230,26 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(userToModify);
         return Optional.of(userToModify);
+    }
+
+    public Optional<User> resetPassword(String email, String newPassword, String confirmPassword, PasswordResetToken token){
+
+        if(newPassword.equals(confirmPassword)) {
+            User userToModify = userRepository.findByEmail(email).get();
+
+            //We encode the password at saving.
+            userToModify.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(userToModify);
+
+            //We delete the token
+            passwordTokenRepository.delete(token);
+
+            return Optional.of(userToModify);
+        }
+        else{
+            return Optional.empty();
+        }
+
     }
 
     public Optional<User> findByUsername(String username) {

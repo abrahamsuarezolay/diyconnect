@@ -1,5 +1,7 @@
 package com.diyconnect.user;
 
+import com.diyconnect.passwordResetTokens.PasswordResetToken;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +38,9 @@ public interface UserService {
 
     Optional<User> modifyCity(String cityName, String userEmail);
 
+    Optional<User> resetPassword(String email, String newPassword, String confirmPassword, PasswordResetToken token);
+
     Optional<User> findByUsername(String username);
+
+    void createPasswordResetTokenForUser(User user, String token);
 }
