@@ -68,6 +68,20 @@ public class UserController {
         }
     }
 
+    @GetMapping("/findbyemail")
+    public ResponseEntity<?> findByEmail(@RequestParam String email) {
+        try{
+            User user = userService.findByEmail(email).get();
+
+            UserDTO userDTO = dtoMapper.userToDTO(user);
+
+            return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+
+        }catch(UserNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/findByCity")
     public ResponseEntity<?> findUsersByCityName(@RequestParam  String cityName){
         try{
