@@ -49,7 +49,6 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonBackReference("cityUserReference")
     private City city;
 
     @OneToMany(mappedBy = "user")

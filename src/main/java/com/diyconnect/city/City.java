@@ -2,10 +2,7 @@ package com.diyconnect.city;
 
 import com.diyconnect.band.Band;
 import com.diyconnect.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,11 +25,11 @@ public class City {
     private String name;
 
     @OneToMany(mappedBy = "city")
-    @JsonManagedReference("cityUserReference")
+    @JsonIgnore
     private List<User> users;
 
     @OneToMany(mappedBy = "city")
-    @JsonManagedReference("cityBandsReference")
+    @JsonIgnore
     private List<Band> bands;
 
     @Override

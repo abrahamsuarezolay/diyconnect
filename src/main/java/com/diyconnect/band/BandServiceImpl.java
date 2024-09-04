@@ -76,7 +76,7 @@ public class BandServiceImpl implements BandService {
     public Optional<List<Band>> findByCityName(String cityName) {
         Optional<List<Band>> band = bandRepository.findByCityName(cityName);
 
-        if(band.isEmpty()) {
+        if(band.get().isEmpty()) {
             throw new NoBandForCityException();
         }else{
             return band;

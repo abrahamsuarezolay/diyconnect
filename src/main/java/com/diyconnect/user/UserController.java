@@ -82,7 +82,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/findByCity")
+    @GetMapping("/findbycity")
     public ResponseEntity<?> findUsersByCityName(@RequestParam  String cityName){
         try{
             List<User> users = userService.findByCityName(cityName).get();

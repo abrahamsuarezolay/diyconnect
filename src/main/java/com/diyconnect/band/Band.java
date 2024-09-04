@@ -36,7 +36,6 @@ public class Band {
 
     @ManyToOne
     @JoinColumn(name = "city_id")
-    @JsonBackReference("cityBandsReference")
     private City city;
 
     private List<String> links;

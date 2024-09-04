@@ -200,11 +200,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<List<User>> findByCityName(String cityName) {
 
-        Optional<List<User>> users = userRepository.findByCityName(cityName);
+        Optional<List<User>> usersQuery = userRepository.findByCityName(cityName);
 
-        if (users.isEmpty()) {
+        if (usersQuery.get().isEmpty()) {
             throw new NoUsersForCityException();
         } else {
+
+            //We filter only the enabled users
+            Optional<List<User>> users = Optional.of(usersQuery.get().stream().filter(user -> user.isEnabled()).toList());
+
             return users;
         }
     }

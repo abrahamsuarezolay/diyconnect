@@ -23,7 +23,7 @@ public class BandController {
 
     private DTOMapper dtoMapper = new DTOMapper();
 
-    @GetMapping("/findByCity")
+    @GetMapping("/findbycity")
     public ResponseEntity getBandByCity(@RequestParam String cityName){
         try{
             List<Band> bands = bandService.findByCityName(cityName).get();
